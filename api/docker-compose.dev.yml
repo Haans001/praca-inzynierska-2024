@@ -1,0 +1,18 @@
+version: '3'
+name: kino-dev
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: kino-db
+    environment:
+      POSTGRES_DB: kino
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - '5434:5432'
+    volumes:
+      - kino_db:/var/lib/postgresql/data
+
+volumes:
+  kino_db:
