@@ -5,10 +5,7 @@ export default function Home() {
     <Box
       sx={{
         width: "100%",
-        height: "100vh",
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
       <Typography variant="h3">Projekt Inzynierski 2024</Typography>

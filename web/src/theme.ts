@@ -1,4 +1,5 @@
 "use client";
+import { indigo } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 import { Roboto } from "next/font/google";
 
@@ -14,6 +15,9 @@ const theme = createTheme({
     mode: "light",
     background: {
       default: "#eeeeee",
+    },
+    primary: {
+      main: indigo[500],
     },
   },
   typography: {
