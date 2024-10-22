@@ -23,12 +23,15 @@
     "db:apply-migrations": "prisma migrate dev"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^5.0.52",
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "5.21.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "svix": "^1.37.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

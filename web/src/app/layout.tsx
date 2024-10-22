@@ -1,4 +1,3 @@
-import { MainLayout } from "@/components/layouts/main-layout";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 import theme from "@/theme";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -17,7 +16,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
               <ThemeProvider theme={theme}>
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
-                <MainLayout>{props.children}</MainLayout>
+                {props.children}
               </ThemeProvider>
             </AppRouterCacheProvider>
           </ReactQueryProvider>

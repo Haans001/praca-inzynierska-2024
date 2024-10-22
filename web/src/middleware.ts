@@ -10,9 +10,16 @@ const dashboardPagesPaths = Object.values(dashboardPages).map(
 
 const isProtectedRoute = createRouteMatcher(dashboardPagesPaths);
 const isAuthRoute = createRouteMatcher(authPagesPaths);
+const isAuthRedirect = createRouteMatcher([dashboardPages.authRedirect.route]);
 
 export default clerkMiddleware((auth, req) => {
-  if (!auth().userId && isProtectedRoute(req)) {
+  const { sessionClaims, userId } = auth();
+
+  const isSyncedWithDatabase = sessionClaims?.databaseID as number;
+
+  console.log(userId, sessionClaims, isSyncedWithDatabase);
+
+  if (!userId && isProtectedRoute(req)) {
     const params = new URLSearchParams({
       redirect_url: req.url,
     }).toString();
@@ -21,7 +28,13 @@ export default clerkMiddleware((auth, req) => {
     return NextResponse.redirect(url);
   }
 
-  if (auth().userId && isAuthRoute(req)) {
+  if (userId && !isSyncedWithDatabase && !isAuthRedirect(req)) {
+    return NextResponse.redirect(
+      new URL(dashboardPages.authRedirect.route, req.url),
+    );
+  }
+
+  if (userId && isAuthRoute(req)) {
     return NextResponse.redirect(
       new URL(dashboardPages.mainPage.route, req.url),
     );

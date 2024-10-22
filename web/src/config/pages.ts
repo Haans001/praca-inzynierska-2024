@@ -5,6 +5,7 @@ export const authPages = {
 
 export const dashboardPages = {
   mainPage: { route: "/", title: "Strona główna" },
+  authRedirect: { route: "/auth-redirect", title: "Przekierowanie" },
 };
 
 export const pages = {

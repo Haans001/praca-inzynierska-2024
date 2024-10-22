@@ -40,7 +40,7 @@ export const EmailCodeStep: React.FC = () => {
       if (signUpAttempt.status === "complete") {
         await setActive({ session: signUpAttempt.createdSessionId });
 
-        router.push(pages.dashboard.mainPage.route);
+        router.push(pages.dashboard.authRedirect.route);
       } else {
         console.error(JSON.stringify(signUpAttempt, null, 2));
       }
