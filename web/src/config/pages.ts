@@ -3,6 +3,11 @@ export const authPages = {
   signup: { route: "/auth/signup", title: "Zarejestruj się" },
 } as const;
 
+export const dashboardPages = {
+  mainPage: { route: "/", title: "Strona główna" },
+};
+
 export const pages = {
   auth: authPages,
+  dashboard: dashboardPages,
 } as const;

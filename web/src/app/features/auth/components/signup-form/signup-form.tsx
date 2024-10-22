@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { SignupStep, useSignupStep } from "../hooks/use-signup-step";
-import { CredentialsStep } from "./signup-form/credentials-step";
-import { EmailCodeStep } from "./signup-form/email-code-step";
+import { SignupStep, useSignupStep } from "../../hooks/use-signup-step";
+import { CredentialsStep } from "./credentials-step";
+import { EmailCodeStep } from "./email-code-step";
 
 const SignupForm: React.FC = () => {
   const { step } = useSignupStep();

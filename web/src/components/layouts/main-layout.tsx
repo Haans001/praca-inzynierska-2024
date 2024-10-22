@@ -1,4 +1,5 @@
 import { pages } from "@/config/pages";
+import { auth } from "@clerk/nextjs/server";
 import PersonIcon from "@mui/icons-material/Person";
 import {
   AppBar,
@@ -10,10 +11,13 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Link } from "../shared/link";
+import { UserMenu } from "../shared/user-menu";
 
 interface DashboardLayoutProps extends React.PropsWithChildren<{}> {}
 
 export const MainLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
+  const { userId } = auth();
+
   return (
     <div>
       <AppBar position="sticky">
@@ -32,20 +36,24 @@ export const MainLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 <Link href={pages.auth.login.route}>Repertuar</Link>
               </Stack>
             </Stack>
-            <Stack direction="row">
-              <Link href={pages.auth.login.route}>
-                <PersonIcon /> Zaloguj się
-              </Link>
-              <Divider
-                orientation="vertical"
-                variant="middle"
-                flexItem
-                sx={{
-                  background: "white",
-                }}
-              />
-              <Link href={pages.auth.signup.route}>Rejestracja</Link>
-            </Stack>
+            {userId ? (
+              <UserMenu />
+            ) : (
+              <Stack direction="row">
+                <Link href={pages.auth.login.route}>
+                  <PersonIcon /> Zaloguj się
+                </Link>
+                <Divider
+                  orientation="vertical"
+                  variant="middle"
+                  flexItem
+                  sx={{
+                    background: "white",
+                  }}
+                />
+                <Link href={pages.auth.signup.route}>Rejestracja</Link>
+              </Stack>
+            )}
           </Toolbar>
         </Container>
       </AppBar>

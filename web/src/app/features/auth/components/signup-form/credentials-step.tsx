@@ -2,11 +2,14 @@
 
 import { PasswordField } from "@/components/shared/password-field";
 import { pages } from "@/config/pages";
+import { useSignUp } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Link, Stack, TextField, Typography } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { parseAuthError } from "../../errors/auth-error";
 import { SignupStep, useSignupStep } from "../../hooks/use-signup-step";
 
 const credentialsStepSchema = z.object({
@@ -19,16 +22,13 @@ const credentialsStepSchema = z.object({
   password: z
     .string()
     .min(1, "Hasło jest wymagane.")
-    .refine((value) => {
-      const res =
+    .refine(
+      (value) =>
         /^(?=(.*[A-Z]))(?=(.*[a-z]))(?=(.*[0-9]))(?=(.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])).{8,}$/.test(
           value,
-        );
-
-      console.log(res);
-
-      return res;
-    }, "Hasło musi zawierać min. 8 znaków i co najmniej 3 znaki spośród wymienionych: duża litera, mała litera, cyfra, znak specjalny."),
+        ),
+      "Hasło musi zawierać min. 8 znaków i co najmniej 3 znaki spośród wymienionych: duża litera, mała litera, cyfra, znak specjalny.",
+    ),
 });
 
 type CredentialsStepFormData = z.infer<typeof credentialsStepSchema>;
@@ -38,20 +38,50 @@ export const CredentialsStep: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
-    watch,
+    setError,
   } = useForm<CredentialsStepFormData>({
     resolver: zodResolver(credentialsStepSchema),
   });
 
   const { setStep } = useSignupStep();
 
-  console.log(watch("password"));
+  const { isLoaded, signUp } = useSignUp();
 
-  const onSubmit = (data: CredentialsStepFormData) => {
-    console.log(data);
-    setStep(SignupStep.EmailCode);
+  const handleStartEmailCodeFlow = async (data: CredentialsStepFormData) => {
+    if (signUp) {
+      await signUp.create({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        emailAddress: data.email,
+        password: data.password,
+      });
+
+      await signUp!.prepareEmailAddressVerification({
+        strategy: "email_code",
+      });
+    }
   };
+
+  const { mutate: startEmailCodeFlow, isPending } = useMutation({
+    mutationFn: handleStartEmailCodeFlow,
+    onSuccess: () => setStep(SignupStep.EmailCode),
+    onError: (err) => {
+      const error = parseAuthError(err);
+
+      if (error.code === "form_identifier_exists") {
+        setError("email", {
+          type: "manual",
+          message: "Konto z podanym adresem email już istnieje.",
+        });
+      } else if (error.code === "form_password_pwned") {
+        setError("password", {
+          type: "manual",
+          message:
+            "Twoje hasło zostało znalezione na liście haseł wykradzionych. Dla bezpieczeństwa konta, proszę użyj innego hasła.",
+        });
+      }
+    },
+  });
 
   return (
     <>
@@ -67,7 +97,7 @@ export const CredentialsStep: React.FC = () => {
         </Typography>
       </Stack>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit((data) => startEmailCodeFlow(data))}>
         <Stack direction="row" spacing={2}>
           <TextField
             label="Imię"
@@ -101,9 +131,21 @@ export const CredentialsStep: React.FC = () => {
           margin="normal"
           {...register("password")}
           error={!!errors.password}
-          helperText="Hasło musi zawierać min. 8 znaków i co najmniej 3 znaki spośród wymienionych: duża litera, mała litera, cyfra, znak specjalny. "
+          helperText={
+            errors.password?.message ??
+            "Hasło musi zawierać min. 8 znaków i co najmniej 3 znaki spośród wymienionych: duża litera, mała litera, cyfra, znak specjalny. "
+          }
         />
-        <Button type="submit" variant="contained" color="primary" fullWidth>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          disabled={isPending}
+          sx={{
+            mt: 2,
+          }}
+        >
           Utwórz konto
         </Button>
       </form>
