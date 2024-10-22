@@ -1,6 +1,12 @@
+"use client";
+import { useUser } from "@clerk/nextjs";
 import { Box, Typography } from "@mui/material";
 
 export default function Home() {
+  const { user } = useUser();
+
+  console.log(user);
+
   return (
     <Box
       sx={{
