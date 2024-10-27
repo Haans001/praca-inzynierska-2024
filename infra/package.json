@@ -1,0 +1,14 @@
+{
+  "name": "inzynierka-infra",
+  "main": "index.ts",
+  "devDependencies": {
+    "@types/node": "^18",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@pulumi/aws": "^6.56.1",
+    "@pulumi/awsx": "^2.16.1",
+    "@pulumi/pulumi": "^3.137.0",
+    "@pulumi/random": "^4.16.7"
+  }
+}
