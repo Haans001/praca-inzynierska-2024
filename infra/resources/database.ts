@@ -6,7 +6,7 @@ import { Stack } from "../types";
 
 interface DatabaseArgs {
   vpc: awsx.ec2.Vpc;
-  bastionSecurityGroup: aws.ec2.SecurityGroup;
+  allowedSecurityGroups: pulumi.Output<aws.ec2.SecurityGroup[]>;
 }
 
 export class Database extends pulumi.ComponentResource {
@@ -35,14 +35,15 @@ export class Database extends pulumi.ComponentResource {
 
     this.dbSecurityGroup = new aws.ec2.SecurityGroup(`${stack}-kino-db-sg`, {
       vpcId: args.vpc.vpcId,
-      name: `${stack}-kino-db-sg`,
       description: "Allow traffic to the database",
       ingress: [
         {
           protocol: "tcp",
           fromPort: 5432,
           toPort: 5432,
-          securityGroups: [args.bastionSecurityGroup.id],
+          securityGroups: args.allowedSecurityGroups.apply((groups) =>
+            groups.map((group) => group.id),
+          ),
         },
       ],
       egress: [
