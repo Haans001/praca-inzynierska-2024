@@ -6,6 +6,8 @@ interface NetworkingArgs {}
 
 export class Networking extends pulumi.ComponentResource {
   public vpc: awsx.ec2.Vpc;
+  public vpcx: awsx.classic.ec2.Vpc;
+  public cluster: awsx.classic.ecs.Cluster;
 
   constructor(
     name: string,
@@ -26,8 +28,17 @@ export class Networking extends pulumi.ComponentResource {
       enableDnsSupport: true,
     });
 
+    this.vpcx = awsx.classic.ec2.Vpc.fromExistingIds(`${stack}-kino-vpcx`, {
+      vpcId: this.vpc.vpcId,
+    });
+
+    this.cluster = new awsx.classic.ecs.Cluster(`${stack}-kino-cluster`, {
+      vpc: this.vpcx,
+    });
+
     this.registerOutputs({
       vpc: this.vpc,
+      vpcx: this.vpcx,
     });
   }
 }

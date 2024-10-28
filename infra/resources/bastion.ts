@@ -21,7 +21,6 @@ export class Bastion extends pulumi.ComponentResource {
 
     this.securityGroup = new aws.ec2.SecurityGroup(`${stack}-kino-bastion-sg`, {
       vpcId: args.vpc.vpcId,
-      name: `${stack}-kino-bastion-sg`,
       description: "Allow SSH access",
       ingress: [
         {
