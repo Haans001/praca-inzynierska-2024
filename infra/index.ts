@@ -5,6 +5,7 @@ import { Bastion } from "./resources/bastion";
 import { Database } from "./resources/database";
 import { DatabaseMigrationTask } from "./resources/database-migration-task";
 import { FargateRunTask } from "./resources/fargate-run-task";
+// import { NestJSApi } from "./resources/nestjs-api";
 import { Networking } from "./resources/networking";
 import { Stack } from "./types";
 
@@ -23,8 +24,19 @@ const databaseMigrationTask = new DatabaseMigrationTask(
   },
 );
 
+// const nestJSAPI = new NestJSApi(`${stack}-kino-api`, {
+//   cluster: networking.cluster,
+//   loadBalancerSubnets: networking.vpc.publicSubnetIds,
+//   serviceSubnets: networking.vpc.privateSubnetIds,
+//   vpc: networking.vpc,
+// });
+
 const dbAllowedSecurityGroups: pulumi.Output<aws.ec2.SecurityGroup[]> =
-  pulumi.all([bastion.securityGroup, databaseMigrationTask.securityGroup]);
+  pulumi.all([
+    bastion.securityGroup,
+    databaseMigrationTask.securityGroup,
+    // nestJSAPI.ecsSecurityGroup,
+  ]);
 
 const database = new Database("kino-database", {
   vpc: networking.vpc,
