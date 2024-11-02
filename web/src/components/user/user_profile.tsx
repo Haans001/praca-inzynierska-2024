@@ -1,0 +1,80 @@
+"use client";
+import { useUser } from "@clerk/nextjs";
+import { 
+    Avatar,
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
+    Paper,
+ } from "@mui/material";
+import * as React from "react";
+
+export const UserProfile: React.FC = () => {
+  const { user, isLoaded } = useUser();
+
+  if (!isLoaded) {
+    return null;
+  }
+
+  const userAvatar = user?.firstName?.charAt(0).toUpperCase();
+
+  return (
+    <div>
+    <TableContainer component={Paper}>
+      <Table sx={{ width: '90%', alignContent: 'center', margin: 5, tableLayout: 'fixed' }} aria-label="Profil użytkownika">
+        <TableBody>
+          <TableRow sx={{ borderBottom: '1px solid #ccc' }}>
+            <TableCell sx={{ fontWeight: 'bold', fontSize: '20px', paddingY: '36px' }}>
+            Profil użytkownika  
+            </TableCell>
+          </TableRow>
+
+          
+          <TableRow>
+            <TableCell sx={{ paddingY: '36px', fontSize: '16px', }}>
+              Profil
+            </TableCell>
+            <TableCell sx={{ paddingY: '36px', display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Avatar sx={{ width: 50, height: 50 }}>{userAvatar}</Avatar> {user?.firstName} {user?.lastName}
+            </TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableCell sx={{ paddingY: '36px', fontSize: '16px', }}>
+              E-mail
+            </TableCell>
+            <TableCell sx={{ paddingY: '36px' }}>
+              {/* Treść pola E-mail */}
+            </TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableCell sx={{ paddingY: '36px', fontSize: '16px', }}>
+              Hasło
+            </TableCell>
+            <TableCell sx={{ paddingY: '36px' }}>
+              Zmień hasło
+            </TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableCell sx={{ paddingY: '36px', borderBottom: 0, fontSize: '16px', }}>
+              Karty rabatowe
+            </TableCell>
+            <TableCell sx={{ paddingY: '36px', borderBottom: 0 }}>
+              
+            </TableCell>
+          </TableRow>
+
+        </TableBody>
+      </Table>
+    </TableContainer>
+
+    </div>  
+  );
+};
+
+export default UserProfile;

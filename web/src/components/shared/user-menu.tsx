@@ -10,6 +10,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import Link from "next/link";
 import * as React from "react";
 
 const MENU_ID = "account-menu";
@@ -94,9 +95,11 @@ export const UserMenu: React.FC = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Profil
-        </MenuItem>
+        <Link href="/profile">
+          <MenuItem onClick={handleClose}>
+            <Avatar /> Profil
+          </MenuItem>
+        </Link>
         <Divider />
         <MenuItem onClick={logout}>
           <ListItemIcon>
