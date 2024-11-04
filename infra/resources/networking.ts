@@ -18,23 +18,41 @@ export class Networking extends pulumi.ComponentResource {
 
     const stack = pulumi.getStack() as Stack;
 
-    this.vpc = new awsx.ec2.Vpc(`${stack}-kino-vpc`, {
-      cidrBlock: "172.16.0.0/20",
-      numberOfAvailabilityZones: 2,
-      natGateways: {
-        strategy: "None",
+    this.vpc = new awsx.ec2.Vpc(
+      `${stack}-kino-vpc`,
+      {
+        cidrBlock: "172.16.0.0/20",
+        numberOfAvailabilityZones: 2,
+        natGateways: {
+          strategy: "None",
+        },
+        enableDnsHostnames: true,
+        enableDnsSupport: true,
       },
-      enableDnsHostnames: true,
-      enableDnsSupport: true,
-    });
+      {
+        parent: this,
+      },
+    );
 
-    this.vpcx = awsx.classic.ec2.Vpc.fromExistingIds(`${stack}-kino-vpcx`, {
-      vpcId: this.vpc.vpcId,
-    });
+    this.vpcx = awsx.classic.ec2.Vpc.fromExistingIds(
+      `${stack}-kino-vpcx`,
+      {
+        vpcId: this.vpc.vpcId,
+      },
+      {
+        parent: this,
+      },
+    );
 
-    this.cluster = new awsx.classic.ecs.Cluster(`${stack}-kino-cluster`, {
-      vpc: this.vpcx,
-    });
+    this.cluster = new awsx.classic.ecs.Cluster(
+      `${stack}-kino-cluster`,
+      {
+        vpc: this.vpcx,
+      },
+      {
+        parent: this,
+      },
+    );
 
     this.registerOutputs({
       vpc: this.vpc,

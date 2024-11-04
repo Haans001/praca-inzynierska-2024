@@ -7,6 +7,9 @@ import { Stack } from "../types";
 
 interface DatabaseMigrationTaskArgs {
   vpc: awsx.ec2.Vpc;
+  databaseSecurityGroup: aws.ec2.SecurityGroup;
+  decryptParameterPolicyArn: pulumi.Output<string>;
+  dbUrlParameterArn: pulumi.Output<string>;
 }
 
 export class DatabaseMigrationTask extends pulumi.ComponentResource {
@@ -26,6 +29,8 @@ export class DatabaseMigrationTask extends pulumi.ComponentResource {
 
       const taskLogGroup = new aws.cloudwatch.LogGroup(
         `${stack}-kino-db-migration-task-log-group`,
+        {},
+        { parent: this },
       );
 
       this.securityGroup = new aws.ec2.SecurityGroup(
@@ -43,6 +48,40 @@ export class DatabaseMigrationTask extends pulumi.ComponentResource {
             },
           ],
         },
+        {
+          parent: this,
+        },
+      );
+
+      const databaseMigrationTaskIngressRule = new aws.ec2.SecurityGroupRule(
+        `${stack}-migration-task-database-access`,
+        {
+          type: "ingress",
+          fromPort: 5432,
+          toPort: 5432,
+          protocol: "tcp",
+          securityGroupId: args.databaseSecurityGroup.id,
+          sourceSecurityGroupId: this.securityGroup.id,
+        },
+        {
+          parent: this,
+        },
+      );
+
+      const taskRole = new aws.iam.Role(
+        `${stack}-kino-db-migration-task-role`,
+        {
+          assumeRolePolicy: aws.iam.assumeRolePolicyForPrincipal(
+            aws.iam.Principals.EcsTasksPrincipal,
+          ),
+          managedPolicyArns: [
+            aws.iam.ManagedPolicy.AmazonECSTaskExecutionRolePolicy,
+            args.decryptParameterPolicyArn,
+          ],
+        },
+        {
+          parent: this,
+        },
       );
 
       const ecrRepository = new aws.ecr.Repository(
@@ -50,6 +89,9 @@ export class DatabaseMigrationTask extends pulumi.ComponentResource {
         {
           imageTagMutability: "MUTABLE",
           forceDelete: true,
+        },
+        {
+          parent: this,
         },
       );
 
@@ -91,8 +133,8 @@ export class DatabaseMigrationTask extends pulumi.ComponentResource {
           ],
         },
         {
-          retainOnDelete: true,
           dependsOn: [ecrRepository],
+          parent: this,
         },
       );
 
@@ -104,12 +146,27 @@ export class DatabaseMigrationTask extends pulumi.ComponentResource {
           container: {
             name: this.containerName,
             image: this.image.ref,
+            secrets: [
+              {
+                name: "DATABASE_URL",
+                valueFrom: args.dbUrlParameterArn,
+              },
+            ],
           },
           logGroup: {
             existing: {
               name: taskLogGroup.name,
             },
           },
+          taskRole: {
+            roleArn: taskRole.arn,
+          },
+          executionRole: {
+            roleArn: taskRole.arn,
+          },
+        },
+        {
+          parent: this,
         },
       );
 
@@ -122,5 +179,3 @@ export class DatabaseMigrationTask extends pulumi.ComponentResource {
     }
   }
 }
-
-// postgresql://postgres:9nqHJY31cxvUaF1xNaaoZgwnkrkYownD@staging-kino-dbc40aefe.c1oe0uycak42.us-east-1.rds.amazonaws.com:5432/staging_kino

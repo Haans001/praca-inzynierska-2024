@@ -4,6 +4,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 interface BastionArgs {
   vpc: awsx.ec2.Vpc;
+  databaseSecurityGroup: aws.ec2.SecurityGroup;
 }
 
 export class Bastion extends pulumi.ComponentResource {
@@ -19,32 +20,53 @@ export class Bastion extends pulumi.ComponentResource {
 
     const stack = pulumi.getStack();
 
-    this.securityGroup = new aws.ec2.SecurityGroup(`${stack}-kino-bastion-sg`, {
-      vpcId: args.vpc.vpcId,
-      description: "Allow SSH access",
-      ingress: [
-        {
-          protocol: "tcp",
-          fromPort: 22,
-          toPort: 22,
-          cidrBlocks: ["0.0.0.0/0"],
-        },
-      ],
-      egress: [
-        {
-          protocol: "-1",
-          fromPort: 0,
-          toPort: 0,
-          cidrBlocks: ["0.0.0.0/0"],
-        },
-      ],
-    });
+    this.securityGroup = new aws.ec2.SecurityGroup(
+      `${stack}-kino-bastion-sg`,
+      {
+        vpcId: args.vpc.vpcId,
+        description: "Allow SSH access",
+        ingress: [
+          {
+            protocol: "tcp",
+            fromPort: 22,
+            toPort: 22,
+            cidrBlocks: ["0.0.0.0/0"],
+          },
+        ],
+        egress: [
+          {
+            protocol: "-1",
+            fromPort: 0,
+            toPort: 0,
+            cidrBlocks: ["0.0.0.0/0"],
+          },
+        ],
+      },
+      { parent: this },
+    );
 
-    const keypair = new aws.ec2.KeyPair("kino-bastion-keypair", {
-      keyName: "kino-bastion-keypair",
-      publicKey:
-        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDcFQ3bGG0IpNeuLq4f/oLvgAAL6Jaco0wyrzYNtR7b8AEddzssQn/5SwbGkujT476VGdx6iZX50bpux3uVhZt9Jy9RtyDpo+TrjNYV+SIzGuhrPmLarEQT71in0SEhI3Yn5GeBiybqLJ5VRmrrCfhcJ+amOJzdTw9bRvYaAj76i/2fQl/adWwYBpPD6K1ao8Q172XA3qh5fpxHFutM+9iUwujbukHuToIhfJ6WnegMoEYg2eDTtmYumPPc4U3sWhgeDgtpazCnMq1wErBToL51n4GQxn3D/ffLpjA3ommc95z9r7msGiQcCx2Ng0VG6tyndBDj+ka3JrFyY6rw9rxABvoUrNinnDUpjel/PN7XsNfmzE1fF2tzWbf5LSbqKELE7QCpor/+DYi01clRW9l+d5XKYsOU6d4AX9lY/+3zPlhyv4+lYIVd9rOcOfo9s4p+pVVKTWWWgbh2YMlUoM+1e4UnrtSXLo2ppuYYHYV87yTCG86KtpK3TIQdm0oI1Vs= janrapacz@macbook-pro-jan.home",
-    });
+    const bastionIngressRule = new aws.ec2.SecurityGroupRule(
+      `${stack}-bastion-database-access`,
+      {
+        type: "ingress",
+        fromPort: 5432,
+        toPort: 5432,
+        protocol: "tcp",
+        securityGroupId: args.databaseSecurityGroup.id,
+        sourceSecurityGroupId: this.securityGroup.id,
+      },
+      { parent: this },
+    );
+
+    const keypair = new aws.ec2.KeyPair(
+      "kino-bastion-keypair",
+      {
+        keyName: "kino-bastion-keypair",
+        publicKey:
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDcFQ3bGG0IpNeuLq4f/oLvgAAL6Jaco0wyrzYNtR7b8AEddzssQn/5SwbGkujT476VGdx6iZX50bpux3uVhZt9Jy9RtyDpo+TrjNYV+SIzGuhrPmLarEQT71in0SEhI3Yn5GeBiybqLJ5VRmrrCfhcJ+amOJzdTw9bRvYaAj76i/2fQl/adWwYBpPD6K1ao8Q172XA3qh5fpxHFutM+9iUwujbukHuToIhfJ6WnegMoEYg2eDTtmYumPPc4U3sWhgeDgtpazCnMq1wErBToL51n4GQxn3D/ffLpjA3ommc95z9r7msGiQcCx2Ng0VG6tyndBDj+ka3JrFyY6rw9rxABvoUrNinnDUpjel/PN7XsNfmzE1fF2tzWbf5LSbqKELE7QCpor/+DYi01clRW9l+d5XKYsOU6d4AX9lY/+3zPlhyv4+lYIVd9rOcOfo9s4p+pVVKTWWWgbh2YMlUoM+1e4UnrtSXLo2ppuYYHYV87yTCG86KtpK3TIQdm0oI1Vs= janrapacz@macbook-pro-jan.home",
+      },
+      { parent: this },
+    );
 
     const linuxAmi = aws.ec2.getAmi({
       mostRecent: true,
@@ -58,17 +80,23 @@ export class Bastion extends pulumi.ComponentResource {
       ],
     });
 
-    this.bastion = new aws.ec2.Instance(`${stack}-kino-bastion`, {
-      ami: linuxAmi.then((ami) => ami.id),
-      instanceType: "t2.micro",
-      keyName: keypair.keyName,
-      associatePublicIpAddress: true,
-      subnetId: args.vpc.publicSubnetIds[0],
-      vpcSecurityGroupIds: [this.securityGroup.id],
-      tags: {
-        Name: `${stack}-kino-bastion`,
+    this.bastion = new aws.ec2.Instance(
+      `${stack}-kino-bastion`,
+      {
+        ami: linuxAmi.then((ami) => ami.id),
+        instanceType: "t2.micro",
+        keyName: keypair.keyName,
+        associatePublicIpAddress: true,
+        subnetId: args.vpc.publicSubnetIds[0],
+        vpcSecurityGroupIds: [this.securityGroup.id],
+        tags: {
+          Name: `${stack}-kino-bastion`,
+        },
       },
-    });
+      {
+        parent: this,
+      },
+    );
 
     this.registerOutputs({
       bastion: this.bastion,
