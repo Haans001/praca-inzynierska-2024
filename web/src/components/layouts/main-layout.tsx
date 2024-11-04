@@ -33,7 +33,7 @@ export const MainLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 Kino MS
               </Typography>
               <Stack direction="row">
-                <Link href={pages.auth.login.route}>Repertuar</Link>
+                <Link href="/cinema_program">Repertuar</Link>
               </Stack>
             </Stack>
             {userId ? (
