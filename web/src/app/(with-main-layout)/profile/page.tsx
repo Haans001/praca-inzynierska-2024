@@ -1,11 +1,14 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
-import { Box, Typography } from "@mui/material";
-import UserProfile from "@/components/user/user_profile";
+import { Box } from "@mui/material";
+import UserProfile from "@/components/user_profile_page/user_profile";
 
 export default function Home() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
 
+  if (!isLoaded) {
+    return null;
+  }
   console.log(user);
 
   return (
