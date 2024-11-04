@@ -10,6 +10,8 @@ import {
     TableRow,
     Paper,
     Stack,
+    Typography,
+    Divider,
  } from "@mui/material";
 import * as React from "react";
 import UserMenu from "./user-profile-menu";
@@ -31,15 +33,14 @@ export const UserProfile: React.FC = () => {
         <UserMenu onMenuClick={handlePageChange} />
 
         {activePage === 'profile' ? (
+        <Paper sx={{width: "100%", margin: 0, borderLeft: 0, borderTopLeftRadius: 0, borderBottomLeftRadius: 0,}}>
+        <Typography sx={{ fontWeight: 'bold', fontSize: '20px', margin: 5, }}>
+          Profil użytkownika  
+        </Typography>
+        <Divider variant="middle" />
         <TableContainer component={Paper} sx={{width: "100%", margin: 0, borderLeft: 0, borderTopLeftRadius: 0, borderBottomLeftRadius: 0,}}>
-        <Table aria-label="Profil użytkownika" sx={{ width: '90%', alignContent: 'center', margin: 5, tableLayout: 'fixed' }}>
-          <TableBody>
-            <TableRow sx={{ borderBottom: '1px solid #ccc' }}>
-              <TableCell sx={{ fontWeight: 'bold', fontSize: '20px', paddingY: '36px' }}>
-              Profil użytkownika  
-              </TableCell>
-            </TableRow>
-            
+        <Table aria-label="Profil użytkownika" sx={{ width: '90%', alignContent: 'center', marginLeft: 5, tableLayout: 'fixed' }}>
+          <TableBody>            
             <TableRow>
               <TableCell sx={{ paddingY: '36px', fontSize: '16px', }}>
                 Profil
@@ -86,6 +87,7 @@ export const UserProfile: React.FC = () => {
           </TableBody>
         </Table>
         </TableContainer>
+        </Paper>
         ) : (
           <ReservationsPage />
         )}
