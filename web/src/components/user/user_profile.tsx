@@ -9,6 +9,7 @@ import {
     TableContainer,
     TableRow,
     Paper,
+    Stack,
  } from "@mui/material";
 import * as React from "react";
 
@@ -20,7 +21,7 @@ export const UserProfile: React.FC = () => {
   }
 
   const userAvatar = user?.firstName?.charAt(0).toUpperCase();
-
+  const email = user?.emailAddresses[0].emailAddress;
   return (
     <div>
     <TableContainer component={Paper}>
@@ -37,8 +38,14 @@ export const UserProfile: React.FC = () => {
             <TableCell sx={{ paddingY: '36px', fontSize: '16px', }}>
               Profil
             </TableCell>
-            <TableCell sx={{ paddingY: '36px', display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Avatar sx={{ width: 50, height: 50 }}>{userAvatar}</Avatar> {user?.firstName} {user?.lastName}
+            <TableCell sx={{ paddingY: '36px', }}>
+              <Stack direction="row" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Stack direction="row" sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Avatar sx={{ width: 50, height: 50 }}>{userAvatar}</Avatar>
+                {user?.firstName} {user?.lastName}
+              </Stack>
+              <Button variant="outlined">Edytuj profil</Button>
+            </Stack>
             </TableCell>
           </TableRow>
 
@@ -47,7 +54,7 @@ export const UserProfile: React.FC = () => {
               E-mail
             </TableCell>
             <TableCell sx={{ paddingY: '36px' }}>
-              {/* Treść pola E-mail */}
+              {email}
             </TableCell>
           </TableRow>
 
@@ -56,7 +63,9 @@ export const UserProfile: React.FC = () => {
               Hasło
             </TableCell>
             <TableCell sx={{ paddingY: '36px' }}>
-              Zmień hasło
+              <Button variant='contained'>
+                Zmień hasło
+              </Button>
             </TableCell>
           </TableRow>
 
