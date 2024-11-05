@@ -47,7 +47,7 @@ Kiedy chcemy zmigrować baze (np. po zaciągnięciu zmian z głównego brancha)
 
 ```bash
 # w folderze /api
-$ npx prisma migrate dev
+$ npx prisma migrate deploy
 ```
 
 Prisma studio - program do przeglądania bazy
@@ -55,6 +55,24 @@ Prisma studio - program do przeglądania bazy
 ```bash
 # w folderze /api
 $ npx prisma studio
+```
+
+#### Domyślni użytkownicy
+
+1. **Dev User**
+
+   - **E-mail**: user.development@kino.com
+   - **Hasło**: development
+
+2. **Admin User**
+   - **E-mail**: user.admin@kino.com
+   - **Hasło**: development
+
+Aby stworzyć tych użytkowników w lokalnej bazie trzeba puścić seed:
+
+```bash
+# w folderze /api
+$ pnpm run db:seed
 ```
 
 ## Obsługa gita
