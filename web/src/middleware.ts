@@ -15,9 +15,7 @@ const isAuthRedirect = createRouteMatcher([dashboardPages.authRedirect.route]);
 export default clerkMiddleware((auth, req) => {
   const { sessionClaims, userId } = auth();
 
-  const isSyncedWithDatabase = sessionClaims?.databaseID as number;
-
-  console.log(userId, sessionClaims, isSyncedWithDatabase);
+  const isSyncedWithDatabase = sessionClaims?.databaseID;
 
   if (!userId && isProtectedRoute(req)) {
     const params = new URLSearchParams({

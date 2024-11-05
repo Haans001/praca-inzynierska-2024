@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
+import { IS_ADMIN_KEY } from 'src/decorators/is-admin-decorator';
 import { IS_PUBLIC_KEY } from 'src/decorators/is-public.decorator';
 import { User } from 'src/types/user';
 
@@ -19,6 +20,11 @@ export class ClerkAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.get<boolean>(
       IS_PUBLIC_KEY,
+      context.getHandler(),
+    );
+
+    const isAdmin = this.reflector.get<boolean>(
+      IS_ADMIN_KEY,
       context.getHandler(),
     );
 
@@ -40,10 +46,17 @@ export class ClerkAuthGuard implements CanActivate {
         authorizedParties: [process.env.WEB_APP_ORIGIN],
       });
 
+      const role = verifiedToken.role;
+
+      if (isAdmin && role !== 'ADMIN') {
+        return false;
+      }
+
       const user: User = {
-        databaseID: verifiedToken.databaseID as number,
-        clerkID: verifiedToken.clerkID as string,
-        email: verifiedToken.email as string,
+        databaseID: verifiedToken.databaseID,
+        clerkID: verifiedToken.clerkID,
+        email: verifiedToken.email,
+        role: verifiedToken.role,
       };
 
       request['user'] = user;
