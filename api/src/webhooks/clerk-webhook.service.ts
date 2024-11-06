@@ -25,8 +25,8 @@ export class ClerkWebhookService {
   }
 
   private async handleUserCreatedEvent(user: UserJSON) {
-    const firstName = user.first_name;
-    const lastName = user.last_name;
+    const firstName = user.first_name || '';
+    const lastName = user.last_name || '';
     const email = user.email_addresses[0].email_address;
     const clerkID = user.id;
 
