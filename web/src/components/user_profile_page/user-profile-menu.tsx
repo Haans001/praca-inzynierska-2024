@@ -9,30 +9,24 @@ import {
     ListItemText,
  } from "@mui/material";
 import * as React from "react";
-import { UserProfile } from './user_profile';
-import ReservationsPage from '../reservations/reservations-page';
 
-interface UserMenuProps {
-    onMenuClick: (page: 'profile' | 'reservations') => void;
-  }
+type UserProfileMenuProps = {
+  showProfile: () => void;
+  showReservations: () => void;
+};
 
-const UserMenu: React.FC<UserMenuProps> = ({ onMenuClick }) => {
-    const [activePage, setActivePage] = React.useState<'profile' | 'reservations'>('profile');
-    const handlePageChange = (page: 'profile' | 'reservations') => {
-      setActivePage(page);
-    };
-
-    return (
+const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ showProfile, showReservations }) => {
+  return (
     <Paper sx={{ maxWidth: '100%', borderRight: '0', borderTopRightRadius: '0', borderBottomRightRadius: 0 }}>
       <MenuList>
-        <MenuItem onClick={() => onMenuClick('profile')}>
+        <MenuItem onClick={(showProfile)}>
           <ListItemIcon>
             <AccountBoxIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Profil</ListItemText>
+          <ListItemText> Profil </ListItemText>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => onMenuClick('reservations')}>
+        <MenuItem onClick={(showReservations)}>
           <ListItemIcon>
             <ClassIcon fontSize="small" />
           </ListItemIcon>
@@ -40,7 +34,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ onMenuClick }) => {
         </MenuItem>
       </MenuList>
     </Paper>
-    );
+  );
 };
 
-export default UserMenu;
+export default UserProfileMenu;
