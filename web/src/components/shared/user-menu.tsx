@@ -1,9 +1,11 @@
 "use client";
 import { pages } from "@/config/pages";
+import { useIsAdmin } from "@/hooks/use-is-admin";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { Logout } from "@mui/icons-material";
 import {
   Avatar,
+  Chip,
   Divider,
   IconButton,
   ListItemIcon,
@@ -17,6 +19,8 @@ const MENU_ID = "account-menu";
 
 export const UserMenu: React.FC = () => {
   const { user, isLoaded } = useUser();
+
+  const { isAdmin } = useIsAdmin();
 
   const { signOut } = useClerk();
 
@@ -47,6 +51,9 @@ export const UserMenu: React.FC = () => {
 
   return (
     <div>
+      {isAdmin ? (
+        <Chip label="ADMIN" variant="filled" color="error" size="small" />
+      ) : null}
       <IconButton
         onClick={handleClick}
         size="small"

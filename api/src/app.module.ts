@@ -7,9 +7,10 @@ import { AuthModule } from './auth/auth.module';
 import { ClerkAuthGuard } from './guards/clerk-auth-guard.guard';
 import { PrismaModule } from './prisma/prisma.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
+import { MoviesModule } from './movies/movies.module';
 
 @Module({
-  imports: [PrismaModule, WebhooksModule, ConfigModule.forRoot(), AuthModule],
+  imports: [PrismaModule, WebhooksModule, ConfigModule.forRoot(), AuthModule, MoviesModule],
   controllers: [AppController],
   providers: [
     AppService,

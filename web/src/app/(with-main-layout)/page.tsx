@@ -14,7 +14,7 @@ export default function Home() {
         display: "flex",
       }}
     >
-      <Typography variant="h3">Projekt Inzynierski 2024</Typography>
+      <Typography variant="h3">Projekt Inzynierski 2024!</Typography>
     </Box>
   );
 }

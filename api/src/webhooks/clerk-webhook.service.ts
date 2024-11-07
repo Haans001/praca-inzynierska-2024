@@ -1,5 +1,6 @@
 import { UserJSON, WebhookEvent, clerkClient } from '@clerk/clerk-sdk-node';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Role } from '@prisma/client';
 import { Request } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Webhook } from 'svix';
@@ -35,6 +36,7 @@ export class ClerkWebhookService {
         lastName,
         email,
         clerkID,
+        role: Role.USER,
       },
       select: {
         id: true,
@@ -44,6 +46,7 @@ export class ClerkWebhookService {
     await clerkClient.users.updateUser(clerkID, {
       publicMetadata: {
         databaseID: id,
+        role: Role.USER,
       },
     });
 
