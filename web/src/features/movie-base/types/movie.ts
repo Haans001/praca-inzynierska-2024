@@ -3,14 +3,14 @@ export interface Movie {
   title: string;
   description: string;
   genres: string[];
-  length: number;
-  image: string;
+  lengthInMinutes: number;
+  imageUrl: string;
 }
 
 export interface MovieFormData {
   title: string;
   description: string;
   genres: string[];
-  length: number;
+  lengthInMinutes: number;
   image: File | null;
 }

@@ -1,7 +1,18 @@
+import { parseFormSubmitResponse } from "@/utils/parse-form-submit-response";
 import { AxiosInstance } from "axios";
 import { MovieFormData } from "../types/movie";
 
-export const addMovie = (axios: AxiosInstance, data: MovieFormData) => {
+type BaseFormResponseErrors<T extends object> = {
+  [K in keyof T]?: string;
+};
+
+interface BaseFormResponse<T extends object, K = {}> {
+  success: boolean;
+  data?: K;
+  errors?: BaseFormResponseErrors<T>;
+}
+
+export const addMovie = async (axios: AxiosInstance, data: MovieFormData) => {
   const formData = new FormData();
   formData.append("title", data.title);
   formData.append("description", data.description);
@@ -9,10 +20,12 @@ export const addMovie = (axios: AxiosInstance, data: MovieFormData) => {
     "genres",
     `[${data.genres.map((genre) => `"${genre}"`).join(",")}]`,
   );
-  formData.append("length", data.length.toString());
+  formData.append("lengthInMinutes", data.lengthInMinutes.toString());
   if (data.image) {
     formData.append("image", data.image);
   }
 
-  return axios.post("/movies/create", formData);
+  return await parseFormSubmitResponse<MovieFormData>(() =>
+    axios.post("/movies/create", formData),
+  );
 };

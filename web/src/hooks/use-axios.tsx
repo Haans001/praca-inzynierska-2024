@@ -2,7 +2,6 @@ import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 
 export const useAxios = () => {
-  console.log(process.env.NEXT_PUBLIC_API_URL);
   const { getToken } = useAuth();
   const instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
