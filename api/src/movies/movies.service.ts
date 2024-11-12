@@ -38,9 +38,11 @@ export class MoviesService {
     });
   }
 
-  // findAll() {
-  //   return `This action returns all movies`;
-  // }
+  async findAll() {
+    const data = await this.prisma.movie.findMany();
+
+    return new SuccessResponse(data);
+  }
 
   // findOne(id: number) {
   //   return `This action returns a #${id} movie`;

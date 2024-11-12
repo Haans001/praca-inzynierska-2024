@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   FileTypeValidator,
+  Get,
   HttpException,
   HttpStatus,
   MaxFileSizeValidator,
@@ -12,7 +13,7 @@ import {
 } from '@nestjs/common';
 // import { Admin } from 'src/decorators/is-admin-decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Public } from 'src/decorators/is-public.decorator';
+import { Admin } from 'src/decorators/is-admin-decorator';
 import { ErrorResponse } from 'src/lib/base-response';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { MoviesService } from './movies.service';
@@ -27,7 +28,8 @@ const fileValidationPipe = new ParseFilePipe({
   ],
   exceptionFactory: () => {
     const response = new ErrorResponse({
-      file: "Plik musi być mniejszy niż 5MB i mieć rozszerzenie '.png', '.jpeg' lub '.jpg'",
+      image:
+        "Plik musi być mniejszy niż 5MB i mieć rozszerzenie '.png', '.jpeg' lub '.jpg'",
     });
 
     return new HttpException(response, HttpStatus.BAD_REQUEST);
@@ -39,8 +41,7 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Post('/create')
-  // @Admin()
-  @Public()
+  @Admin()
   @UseInterceptors(FileInterceptor('image'))
   create(
     @Body() createMovieDto: CreateMovieDto,
@@ -50,10 +51,11 @@ export class MoviesController {
     return this.moviesService.create(createMovieDto, image);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.moviesService.findAll();
-  // }
+  @Get()
+  @Admin()
+  async findAll() {
+    return await this.moviesService.findAll();
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

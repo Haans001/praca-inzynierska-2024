@@ -1,6 +1,6 @@
 "use client";
-import { MovieBase } from "@/features/movie-base/components/movie-base";
+import { MovieDatabase } from "@/features/movie-base/components/movie-database";
 
 export default function AdminMovies() {
-  return <MovieBase />;
+  return <MovieDatabase />;
 }
