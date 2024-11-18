@@ -42,7 +42,7 @@ export const AuthRedirect: React.FC = () => {
 
   React.useEffect(() => {
     let ignore = false;
-    let interval: NodeJS.Timer;
+    let interval: NodeJS.Timeout;
 
     if (!ignore) {
       interval = beginPolling();

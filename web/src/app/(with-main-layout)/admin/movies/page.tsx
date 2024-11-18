@@ -1,15 +1,6 @@
 "use client";
-import { Box, Typography } from "@mui/material";
+import { MovieDatabase } from "@/features/movie-base/components/movie-database";
 
 export default function AdminMovies() {
-  return (
-    <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-      }}
-    >
-      <Typography variant="h3">Baza filmów</Typography>
-    </Box>
-  );
+  return <MovieDatabase />;
 }
