@@ -11,6 +11,6 @@ export const ZodValidationPipe = createZodValidationPipe({
       return acc;
     }, {});
 
-    return new HttpException(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
+    return new HttpException(new ErrorResponse(errors), HttpStatus.OK);
   },
 });

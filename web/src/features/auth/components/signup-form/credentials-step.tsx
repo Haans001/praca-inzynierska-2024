@@ -96,7 +96,6 @@ export const CredentialsStep: React.FC = () => {
           Zarejestruj się aby rezerwować bilety na filmy w naszym kinie.
         </Typography>
       </Stack>
-
       <form onSubmit={handleSubmit((data) => startEmailCodeFlow(data))}>
         <Stack direction="row" spacing={2}>
           <TextField

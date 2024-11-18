@@ -15,14 +15,15 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
   firstName String
   lastName  String
   clerkID   String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Booking   Booking[]
 }
 
 enum Role {
@@ -31,10 +32,32 @@ enum Role {
 }
 
 model Movie {
-  id              Int      @id @default(autoincrement())
-  title           String   @unique
+  id              Int          @id @default(autoincrement())
+  title           String       @unique
   description     String
   lengthInMinutes Int
   genres          String[]
   imageUrl        String
+  Repertoire      Repertoire[]
+}
+
+model Repertoire {
+  id        Int       @id @default(autoincrement())
+  movieId   Int
+  movie     Movie     @relation(fields: [movieId], references: [id])
+  startTime DateTime
+  endTime   DateTime
+  bookings  Booking[]
+
+  @@unique([startTime, endTime])
+}
+
+model Booking {
+  id           Int        @id @default(autoincrement())
+  userId       Int
+  repertoireId Int
+  repertoire   Repertoire @relation(fields: [repertoireId], references: [id])
+  seatNumbers  Int[]
+  user         User       @relation(fields: [userId], references: [id])
+  createdAt    DateTime   @default(now())
 }

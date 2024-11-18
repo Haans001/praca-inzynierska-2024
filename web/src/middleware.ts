@@ -17,6 +17,8 @@ export default clerkMiddleware((auth, req) => {
 
   const isSyncedWithDatabase = sessionClaims?.databaseID;
 
+  const isAdmin = sessionClaims?.role === "ADMIN";
+
   if (!userId && isProtectedRoute(req)) {
     const params = new URLSearchParams({
       redirect_url: req.url,

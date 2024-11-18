@@ -102,8 +102,6 @@ export const MovieDatabase: React.FC = () => {
       return "Wystąpił błąd";
     }
 
-    console.log(movies);
-
     if (movies && movies.length > 0) {
       return (
         <Stack spacing={2} direction="column">
