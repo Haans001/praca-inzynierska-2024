@@ -38,6 +38,10 @@ const RepertuarPage: React.FC = () => {
     return showtimeEntry?.dates[selectedDate] || [];
   };
 
+  const reservationPage = () => {
+    window.location.href = './seat_reservation'
+  }
+
   return (
     <Box sx={{ width: "100%", maxWidth: "lg", padding: 4 }}>
       <Typography variant="h3" gutterBottom>Repertuar Kinowy</Typography>
@@ -106,7 +110,7 @@ const RepertuarPage: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">Zamknij</Button>
-          <Button variant="contained" color="primary">Zarezerwuj miejsce</Button>
+          <Button onClick={reservationPage} variant="contained" color="primary">Zarezerwuj miejsce</Button>
         </DialogActions>
       </Dialog>
     </Box>
