@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { authPages, dashboardPages } from "./config/pages";
+import { adminPages, authPages, dashboardPages } from "./config/pages";
 
 const authPagesPaths = Object.values(authPages).map((page) => page.route);
 
@@ -8,9 +8,15 @@ const dashboardPagesPaths = Object.values(dashboardPages).map(
   (page) => page.route,
 );
 
-const isProtectedRoute = createRouteMatcher(dashboardPagesPaths);
+const adminPagesPaths = Object.values(adminPages).map((page) => page.route);
+
+const isProtectedRoute = createRouteMatcher([
+  ...dashboardPagesPaths,
+  ...adminPagesPaths,
+]);
 const isAuthRoute = createRouteMatcher(authPagesPaths);
 const isAuthRedirect = createRouteMatcher([dashboardPages.authRedirect.route]);
+const isAdminRoute = createRouteMatcher(adminPagesPaths);
 
 export default clerkMiddleware((auth, req) => {
   const { sessionClaims, userId } = auth();
@@ -34,9 +40,15 @@ export default clerkMiddleware((auth, req) => {
     );
   }
 
+  if (userId && !isAdmin && isAdminRoute(req)) {
+    return NextResponse.redirect(
+      new URL(dashboardPages.repertoire.route, req.url),
+    );
+  }
+
   if (userId && isAuthRoute(req)) {
     return NextResponse.redirect(
-      new URL(dashboardPages.mainPage.route, req.url),
+      new URL(dashboardPages.repertoire.route, req.url),
     );
   }
 });

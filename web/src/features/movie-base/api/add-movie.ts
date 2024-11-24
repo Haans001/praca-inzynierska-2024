@@ -1,4 +1,4 @@
-import { BaseFormResponse } from "@/utils/parse-form-submit-response";
+import { BaseFormResponse } from "@/types/base-response";
 import { AxiosInstance } from "axios";
 import { MovieFormData } from "../types/movie";
 
