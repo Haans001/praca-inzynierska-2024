@@ -46,7 +46,7 @@ const LoginForm: React.FC = () => {
 
       if (signInAttempt.status === "complete") {
         await setActive({ session: signInAttempt.createdSessionId });
-        router.push(redirectUrl ?? pages.dashboard.mainPage.route);
+        router.push(redirectUrl ?? pages.dashboard.repertoire.route);
       } else {
         // If the status is not complete, check why. User may need to
         // complete further steps.

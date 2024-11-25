@@ -66,15 +66,6 @@ export const UserProfile: React.FC = () => {
                     </Button>
                   </TableCell>
                 </TableRow>
-
-                <TableRow>
-                  <TableCell sx={{ paddingY: '36px', borderBottom: 0, fontSize: '16px', }}>
-                    Karty rabatowe
-                  </TableCell>
-                  <TableCell sx={{ paddingY: '36px', borderBottom: 0 }}>
-                    
-                  </TableCell>
-                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
