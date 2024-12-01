@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { AdminMenu } from "../shared/admin-menu";
 import { Link } from "../shared/link";
 import { UserMenu } from "../shared/user-menu";
 
@@ -33,7 +34,8 @@ export const MainLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 Kino MS
               </Typography>
               <Stack direction="row">
-                <Link href="/cinema_program">Repertuar</Link>
+                <Link href={pages.dashboard.repertoire.route}>Repertuar</Link>
+                <AdminMenu />
               </Stack>
             </Stack>
             {userId ? (

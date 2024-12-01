@@ -1,3 +1,4 @@
+import { pages } from "@/config/pages";
 import {
   Box,
   Button,
@@ -12,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { Repertoire } from "../types/types";
 
@@ -29,6 +31,8 @@ export const RepertoireItemCard: React.FC<RepertoireItemCardProps> = ({
   const { movie } = repertoire;
 
   const [detailsModalOpen, setDetailsModalOpen] = React.useState(false);
+
+  const router = useRouter();
 
   return (
     <Card sx={{ display: "flex", mb: 2, height: "100%" }}>
@@ -64,9 +68,19 @@ export const RepertoireItemCard: React.FC<RepertoireItemCardProps> = ({
             {movie.lengthInMinutes} minut
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
-            {startTimes.map((time) => (
-              <Button key={time} variant="contained" color="primary">
-                {format(new Date(time), "HH:mm")}
+            {repertoires.map((repertoire) => (
+              <Button
+                key={repertoire.id}
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  router.push(
+                    `${pages.dashboard.reservation.route}?showingId=${repertoire.id}`,
+                  )
+                }
+                disabled={new Date(repertoire.startTime) < new Date()}
+              >
+                {format(new Date(repertoire.startTime), "HH:mm")}
               </Button>
             ))}
           </Box>

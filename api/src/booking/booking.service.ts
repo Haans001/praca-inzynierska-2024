@@ -87,4 +87,13 @@ export class BookingService {
       bookingId: id,
     });
   }
+
+  async getUserBookings(userId: number) {
+    const bookings = await this.prisma.booking.findMany({
+      where: { userId },
+      include: { repertoire: { include: { movie: true } } },
+    });
+
+    return new SuccessResponse(bookings);
+  }
 }

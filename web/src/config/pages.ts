@@ -7,6 +7,8 @@ export const dashboardPages = {
   mainPage: { route: "/", title: "Strona główna" },
   authRedirect: { route: "/auth-redirect", title: "Przekierowanie" },
   repertoire: { route: "/repertoire", title: "Repertuar" },
+  reservation: { route: "/reservation", title: "Rezerwacja" },
+  profile: { route: "/profile", title: "Profil" },
 };
 
 export const adminPages = {
