@@ -29,10 +29,12 @@ import { MovieFormData } from "../types/movie";
 
 const genres = [
   "Akcja",
+  "Animowany",
   "Przygodowy",
   "Komedia",
   "Kryminalny",
   "Dramat",
+  "Familijny",
   "Fantasy",
   "Historyczny",
   "Horror",
@@ -162,7 +164,7 @@ export const MovieDatabase: React.FC = () => {
         <Button
           variant="contained"
           onClick={() => setIsModalOpen(true)}
-          sx={{ marginBottom: 2 }}
+          sx={{ marginBottom: 2, backgroundColor: "#004287", "&:hover": { backgroundColor: "#7e88a0" } }}
         >
           Dodaj film
         </Button>
@@ -299,7 +301,7 @@ export const MovieDatabase: React.FC = () => {
                     {...field}
                   />
                   <label htmlFor="image-upload">
-                    <Button variant="contained" component="span">
+                    <Button variant="contained" component="span" sx={{backgroundColor: "#220eb6"}}>
                       Dodaj obrazek
                     </Button>
                   </label>
@@ -323,12 +325,18 @@ export const MovieDatabase: React.FC = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setIsModalOpen(false)}>Wyjdź</Button>
+            <Button onClick={() => setIsModalOpen(false)} sx={{"&:hover": { color: "red" }}}>Wyjdź</Button>
             <Button
               type="submit"
               variant="contained"
               color="primary"
               disabled={addMovieMutation.isPending}
+              sx={{
+                backgroundColor: "#004287",
+                "&:hover": {
+                  backgroundColor: "#7e88a0",
+                }
+              }}
             >
               Dodaj film
             </Button>

@@ -21,7 +21,11 @@ export const MainLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   return (
     <div>
-      <AppBar position="sticky">
+      <AppBar position="sticky" 
+        style={{
+          backgroundColor: "#184091"
+        }}
+      >
         <Container maxWidth="lg">
           <Toolbar
             style={{
@@ -30,7 +34,7 @@ export const MainLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             }}
           >
             <Stack direction="row" gap="24px" alignItems={"center"}>
-              <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+              <Typography variant="h4" component="div" sx={{ flexGrow: 1, fontFamily: "Comic Sans MS", textShadow: "#a7c4c9 1px 0 8px" }}>
                 Kino MS
               </Typography>
               <Stack direction="row">

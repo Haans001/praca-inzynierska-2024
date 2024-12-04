@@ -115,6 +115,10 @@ const LoginForm: React.FC = () => {
           fullWidth
           sx={{
             mt: 2,
+            backgroundColor: "#004287",
+            "&:hover": {
+              backgroundColor: "#7e88a0",
+            }
           }}
           disabled={isPending}
         >

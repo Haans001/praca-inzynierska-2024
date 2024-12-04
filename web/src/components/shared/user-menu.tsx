@@ -102,7 +102,7 @@ export const UserMenu: React.FC = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <Link href="/profile">
+        <Link href="/profile" style={{ textDecoration: "none", color: "black" }}>
           <MenuItem onClick={handleClose}>
             <Avatar /> Profil
           </MenuItem>

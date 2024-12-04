@@ -16,7 +16,7 @@ export const addMovie = async (axios: AxiosInstance, data: MovieFormData) => {
   }
 
   const response = await axios.post<BaseFormResponse<MovieFormData>>(
-    "/movies",
+    "/movies/create",
     formData,
   );
 

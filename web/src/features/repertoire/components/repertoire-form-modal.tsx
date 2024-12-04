@@ -102,8 +102,8 @@ export const RepertoireFormModal: React.FC<RepertoireFormProps> = ({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Button variant="contained" onClick={() => setOpen(true)}>
-        Dodaj film tego dnia
+      <Button variant="contained" onClick={() => setOpen(true)} sx={{backgroundColor: "#004287", "&:hover": {backgroundColor: "#7e88a0",} }}>
+        Dodaj film na wybrany dzień
       </Button>
       <Dialog
         open={open}
@@ -181,6 +181,12 @@ export const RepertoireFormModal: React.FC<RepertoireFormProps> = ({
               type="submit"
               variant="contained"
               disabled={addMovieToRepertoireMutation.isPending}
+              sx={{
+                backgroundColor: "#004287",
+                "&:hover": {
+                  backgroundColor: "#7e88a0",
+                }
+              }}
             >
               Dodaj seans
             </Button>

@@ -43,6 +43,7 @@ export const AdminMenu: React.FC<AdminMenuProps> = ({}) => {
           onClick={handleClose}
           component={Link}
           href={pages.admin.movies.route}
+          sx={{ color: "black" }}
         >
           Baza filmów
         </MenuItem>
