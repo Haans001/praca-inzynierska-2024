@@ -195,6 +195,34 @@ export const CinemaRoom: React.FC<CinemaRoomProps> = ({ showing }) => {
             const seatId = idx + 1;
 
             return (
+              <Box
+                sx={{
+                  display: "flex", 
+                  alignItems: "center",
+                }}
+              >
+              <Stack
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "flex-end", 
+                  marginRight: "10px", 
+                }}
+              >
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      fontSize: "14px",
+                      color: "black",
+                      height: "60px", 
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {seatId % 8 === 1 ? Math.floor(seatId / 8) + 1 : ""}
+                  </Typography>
+              </Stack>
               <Button
                 key={seatId}
                 sx={{
@@ -228,7 +256,10 @@ export const CinemaRoom: React.FC<CinemaRoomProps> = ({ showing }) => {
                 }}
                 onClick={() => toggleSeatSelection(seatId)}
                 disabled={isOccupied(seatId)}
-              />
+              >
+                {seatId % 8 === 0 ? 8 : seatId % 8}
+              </Button> 
+              </Box>
             );
           })}
         </Stack>
