@@ -12,9 +12,7 @@ export default function Home() {
     return null;
   }
 
-  const [currentPage, setCurrentPage] = React.useState<
-    "profile" | "reservations"
-  >("profile");
+  const [currentPage, setCurrentPage] = React.useState<"profile" | "reservations">("profile");
   const showProfile = () => setCurrentPage("profile");
   const showReservations = () => setCurrentPage("reservations");
   return (

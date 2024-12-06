@@ -13,6 +13,7 @@ export const dashboardPages = {
 
 export const adminPages = {
   movies: { route: "/admin/movies", title: "Baza filmów" },
+  clientsReservation: { route: "/admin/clients-reservation", title: "Rezerwacje klientów" }
 };
 
 export const pages = {
