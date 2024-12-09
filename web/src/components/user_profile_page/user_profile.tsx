@@ -42,28 +42,15 @@ export const UserProfile: React.FC = () => {
                         <Avatar sx={{ width: 50, height: 50 }}>{userAvatar}</Avatar>
                         {user?.firstName} {user?.lastName}
                       </Stack>
-                      <Button variant="outlined">Edytuj profil</Button>
                   </Stack>
                   </TableCell>
                 </TableRow>
-
                 <TableRow>
                   <TableCell sx={{ paddingY: '36px', fontSize: '16px', }}>
                     E-mail
                   </TableCell>
                   <TableCell sx={{ paddingY: '36px' }}>
                     {email}
-                  </TableCell>
-                </TableRow>
-
-                <TableRow>
-                  <TableCell sx={{ paddingY: '36px', fontSize: '16px', }}>
-                    Hasło
-                  </TableCell>
-                  <TableCell sx={{ paddingY: '36px' }}>
-                    <Button variant='contained'>
-                      Zmień hasło
-                    </Button>
                   </TableCell>
                 </TableRow>
               </TableBody>
