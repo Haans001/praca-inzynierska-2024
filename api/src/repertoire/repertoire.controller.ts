@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { Admin } from 'src/decorators/is-admin-decorator';
+import { Public } from 'src/decorators/is-public.decorator';
 import { z } from 'zod';
 import { CreateRepertoireDto } from './dto/repertoire.dto';
 import { RepertoireService } from './repertoire.service';
@@ -26,6 +27,7 @@ export class RepertoireController {
   }
 
   @Get('by-date')
+  @Public()
   findByDate(
     @Query(new ZodValidationPipe(DateQuerySchema))
     query: z.infer<typeof DateQuerySchema>,

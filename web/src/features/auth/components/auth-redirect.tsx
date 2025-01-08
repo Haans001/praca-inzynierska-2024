@@ -20,7 +20,7 @@ export const AuthRedirect: React.FC = () => {
     const interval = setInterval(async () => {
       if (userIsSyncedWithDatabase) {
         clearInterval(interval);
-        router.replace(pages.dashboard.repertoire.route);
+        router.replace(pages.publicPages.repertoire.route);
       } else {
         await user?.reload?.();
       }

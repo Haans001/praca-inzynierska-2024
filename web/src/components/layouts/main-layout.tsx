@@ -38,7 +38,7 @@ export const MainLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 Kino MS
               </Typography>
               <Stack direction="row">
-                <Link href={pages.dashboard.repertoire.route}>Repertuar</Link>
+                <Link href={pages.publicPages.repertoire.route}>Repertuar</Link>
                 <AdminMenu />
               </Stack>
             </Stack>

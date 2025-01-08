@@ -1,5 +1,4 @@
-import { Controller, Post, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Post } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthService } from './auth.service';
 
@@ -11,9 +10,7 @@ export class AuthController {
   ) {}
 
   @Post('/delete-user')
-  async deleteUser(@Req() req: Request) {
-    console.log('Deleting user', req.user?.email);
-
+  async deleteUser() {
     return {
       message: 'User deleted successfully',
     };

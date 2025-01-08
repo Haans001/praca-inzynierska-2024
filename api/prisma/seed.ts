@@ -16,7 +16,7 @@ const main = async () => {
   });
 
   await prisma.user.upsert({
-    where: { id: 1 },
+    where: { id: 2 },
     update: {},
     create: {
       id: 2,

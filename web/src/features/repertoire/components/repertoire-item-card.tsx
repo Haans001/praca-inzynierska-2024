@@ -75,7 +75,7 @@ export const RepertoireItemCard: React.FC<RepertoireItemCardProps> = ({
                 color="primary"
                 onClick={() =>
                   router.push(
-                    `${pages.dashboard.reservation.route}?showingId=${repertoire.id}`,
+                    `${pages.protectedPages.reservation.route}?showingId=${repertoire.id}`,
                   )
                 }
                 disabled={new Date(repertoire.startTime) < new Date()}

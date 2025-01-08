@@ -1,5 +1,6 @@
 FROM node:20-alpine AS base
 RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache openssl
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 ENV PNPM_HOME="/pnpm"
@@ -28,4 +29,4 @@ COPY --chown=nodejs:nodejs --from=builder /app/dist ./dist
 COPY --chown=nodejs:nodejs --from=builder /app/node_modules ./node_modules
 USER nodejs
 EXPOSE 4005
-ENTRYPOINT ["node", "dist/main.js"]
+ENTRYPOINT ["node", "dist/src/main.js"]

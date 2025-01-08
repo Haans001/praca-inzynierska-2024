@@ -54,8 +54,6 @@ export const Repertoire: React.FC = () => {
     return acc;
   }, {} as Record<string, RepertoireItem[]>);
 
-  console.log("repertoire", repertoire);
-
   const shouldShowEmptyState = !isLoading && repertoire.length === 0;
 
   return (

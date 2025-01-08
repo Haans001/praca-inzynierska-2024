@@ -3,12 +3,15 @@ export const authPages = {
   signup: { route: "/auth/signup", title: "Zarejestruj się" },
 } as const;
 
-export const dashboardPages = {
-  mainPage: { route: "/", title: "Strona główna" },
+export const protectedPages = {
   authRedirect: { route: "/auth-redirect", title: "Przekierowanie" },
-  repertoire: { route: "/repertoire", title: "Repertuar" },
   reservation: { route: "/reservation", title: "Rezerwacja" },
   profile: { route: "/profile", title: "Profil" },
+};
+
+export const publicPages = {
+  repertoire: { route: "/repertoire", title: "Repertuar" },
+  mainPage: { route: "/", title: "Strona główna" },
 };
 
 export const adminPages = {
@@ -18,6 +21,7 @@ export const adminPages = {
 
 export const pages = {
   auth: authPages,
-  dashboard: dashboardPages,
+  protectedPages: protectedPages,
+  publicPages: publicPages,
   admin: adminPages,
 } as const;

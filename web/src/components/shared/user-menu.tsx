@@ -38,7 +38,7 @@ export const UserMenu: React.FC = () => {
 
   const logout = async () => {
     await signOut({
-      redirectUrl: pages.dashboard.repertoire.route,
+      redirectUrl: pages.publicPages.repertoire.route,
     });
     setAnchorEl(null);
   };

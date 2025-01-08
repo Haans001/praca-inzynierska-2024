@@ -9,6 +9,10 @@ export interface Showing extends Repertoire {
     repertoireId: number;
     seatNumbers: number[];
     createdAt: Date;
+    user: {
+      id: number;
+      email: string;
+    };
   }[];
 }
 

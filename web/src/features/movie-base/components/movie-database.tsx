@@ -58,14 +58,27 @@ export const MovieDatabase: React.FC = () => {
     queryFn: async () => await getMovies(axios),
   });
 
+  const {
+    control,
+    handleSubmit,
+    setError,
+    reset,
+    formState: { errors },
+  } = useForm<MovieFormData>({});
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    reset();
+    setPreviewImage(null);
+  };
+
   const addMovieMutation = useMutation({
     mutationFn: (data: MovieFormData) => addMovie(axios, data),
     onSuccess: (data) => {
       if (data.success) {
         queryClient.invalidateQueries({ queryKey: ["movies"] });
-        setIsModalOpen(false);
+        handleCloseModal();
       } else {
-        console.log(data.errors);
         if (data.errors) {
           Object.entries(data.errors).forEach(([field, message]) => {
             setError(field as keyof MovieFormData, { message });
@@ -73,14 +86,18 @@ export const MovieDatabase: React.FC = () => {
         }
       }
     },
-  });
+    onError: (error: any) => {
+      const errors = error.response?.data.errors;
 
-  const {
-    control,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<MovieFormData>({});
+      if (errors) {
+        Object.entries(errors).forEach(([field, message]) => {
+          setError(field as keyof MovieFormData, {
+            message: message as string,
+          });
+        });
+      }
+    },
+  });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -170,7 +187,12 @@ export const MovieDatabase: React.FC = () => {
         </Button>
       </Stack>
       {renderMovies()}
-      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Dialog
+        open={isModalOpen}
+        onClose={() => {
+          handleCloseModal();
+        }}
+      >
         <DialogTitle>Dodaj film</DialogTitle>
         <form
           onSubmit={handleSubmit(

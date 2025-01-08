@@ -91,7 +91,12 @@ export class RepertoireService {
   async findById(id: number) {
     const data = await this.prisma.repertoire.findUnique({
       where: { id },
-      include: { movie: true, bookings: true },
+      include: {
+        movie: true,
+        bookings: {
+          include: { user: true },
+        },
+      },
     });
 
     return new SuccessResponse({

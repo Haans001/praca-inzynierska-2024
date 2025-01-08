@@ -16,9 +16,9 @@ interface NestJSApiArgs {
   dbUrlParameterArn: pulumi.Output<string>;
 }
 
-const EXISTING_ZONE_ID = "Z052742638UH0YDLLFILO";
+const EXISTING_ZONE_ID = "Z07232961ZQEPWE37KGU0";
 const EXISTING_CERTIFICATE_ARN =
-  "arn:aws:acm:us-east-1:619071352249:certificate/b7a1e4f7-e99c-4d4b-9e60-8a8bf32dd655";
+  "arn:aws:acm:us-east-1:619071352249:certificate/4b8b82d1-b07c-447a-b8e0-ab6149ce2829";
 
 export class NestJSApi extends pulumi.ComponentResource {
   public loadBalancerSecurityGroup: aws.ec2.SecurityGroup;
@@ -336,9 +336,7 @@ export class NestJSApi extends pulumi.ComponentResource {
       {
         zoneId: EXISTING_ZONE_ID,
         name:
-          stack === "staging"
-            ? "staging-api.kino-inzynierka.link"
-            : "api.kino-inzynierka.link",
+          stack === "staging" ? "staging-api.kino-ms.link" : "api.kino-ms.link",
         type: "CNAME",
         ttl: 300,
         records: [lb.dnsName],
