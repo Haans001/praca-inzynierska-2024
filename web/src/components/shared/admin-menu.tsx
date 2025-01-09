@@ -47,14 +47,6 @@ export const AdminMenu: React.FC<AdminMenuProps> = ({}) => {
         >
           Baza filmów
         </MenuItem>
-        <MenuItem
-          onClick={handleClose}
-          component={Link}
-          href={pages.admin.clientsReservation.route}
-          sx={{ color: "black" }}
-        >
-          Rezerwacje klientów
-        </MenuItem>
       </Menu>
     </>
   );

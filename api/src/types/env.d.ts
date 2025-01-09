@@ -1,9 +1,9 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      AWS_REGION: string;
-      AWS_ACCESS_KEY_ID: string;
-      AWS_SECRET_ACCESS_KEY: string;
+      MY_AWS_REGION: string;
+      MY_AWS_ACCESS_KEY_ID: string;
+      MY_AWS_SECRET_ACCESS_KEY: string;
       WEB_APP_ORIGIN: string;
     }
   }

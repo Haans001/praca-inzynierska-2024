@@ -40,10 +40,13 @@ export class ClerkAuthGuard implements CanActivate {
       return false;
     }
 
+    console.log('WEB_APP_ORIGIN', process.env.WEB_APP_ORIGIN);
+    console.log('CLERK_SECRET_KEY', process.env.CLERK_SECRET_KEY);
+
     try {
       const verifiedToken = await verifyToken(bearerToken, {
         secretKey: process.env.CLERK_SECRET_KEY,
-        authorizedParties: [process.env.WEB_APP_ORIGIN],
+        // authorizedParties: [process.env.WEB_APP_ORIGIN],
       });
 
       const role = verifiedToken.role;
